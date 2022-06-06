@@ -53,5 +53,9 @@ public class UserController {
         }
     }
 
+    @PutMapping("/users")
+    public void updateUser(@RequestBody User user){
+        User updateUser = userDaoService.updateUser(user);
 
+    }
 }
