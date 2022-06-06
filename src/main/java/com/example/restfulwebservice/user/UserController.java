@@ -32,7 +32,7 @@ public class UserController {
         return user;
     }
 
-    @PostMapping("users")
+    @PostMapping("/users")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User savedUser = userDaoService.save(user);
 
@@ -43,4 +43,15 @@ public class UserController {
 
         return ResponseEntity.created(location).build();
     }
+
+    @DeleteMapping("users/{id}")
+    public void deleteUser(@PathVariable int id){
+        User user = userDaoService.deleteUser(id);
+
+        if(user == null){
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+    }
+
+
 }
