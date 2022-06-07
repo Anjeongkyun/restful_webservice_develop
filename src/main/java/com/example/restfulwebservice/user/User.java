@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 
-@JsonFilter("UserInfo")
+//@JsonFilter("UserInfo")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

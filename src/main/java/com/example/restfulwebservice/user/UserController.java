@@ -1,12 +1,18 @@
 package com.example.restfulwebservice.user;
 
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 public class UserController {
@@ -18,8 +24,18 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public List<User> retrieveAllUsers() {
-        return userDaoService.findAll();
+    public ResponseEntity<CollectionModel<EntityModel<User>>> retrieveAllUsers() {
+        List<EntityModel<User>> result = new ArrayList<>();
+        List<User> users = userDaoService.findAll();
+
+        for (User user : users) {
+            EntityModel entityModel = EntityModel.of(user);
+            entityModel.add(linkTo(methodOn(this.getClass()).retrieveAllUsers()).withSelfRel());
+
+            result.add(entityModel);
+        }
+
+        return ResponseEntity.ok(CollectionModel.of(result, linkTo(methodOn(this.getClass()).retrieveAllUsers()).withSelfRel()));
     }
 
     @GetMapping("/users/{id}")
