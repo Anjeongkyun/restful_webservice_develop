@@ -23,8 +23,16 @@ public class AdminUserController {
     }
 
     @GetMapping("/users")
-    public List<User> retrieveAllUsers() {
-        return userDaoService.findAll();
+    public MappingJacksonValue retrieveAllUsers() {
+        List<User> users = userDaoService.findAll();
+
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
+                .filterOutAllExcept("id","name","joinDate","ssn");
+        FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfo", filter);
+        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(users);
+        mappingJacksonValue.setFilters(filters);
+
+        return mappingJacksonValue;
     }
 
     @GetMapping("/users/{id}")
@@ -37,11 +45,8 @@ public class AdminUserController {
 
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
                 .filterOutAllExcept("id","name","joinDate","ssn");
-
         FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfo", filter);
-
         MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(user);
-
         mappingJacksonValue.setFilters(filters);
 
         return mappingJacksonValue;
