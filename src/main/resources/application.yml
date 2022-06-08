@@ -8,7 +8,11 @@ spring:
   datasource:
     url: jdbc:h2:mem:testdb
   jpa:
+    hibernate:
+      ddl-auto: create-drop
     show-sql: true
+    generate-ddl: true
+    defer-datasource-initialization: true
   message:
     basename: messages
 
