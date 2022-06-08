@@ -1,12 +1,12 @@
 package com.example.restfulwebservice.user;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -16,15 +16,17 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+@Entity
+public class Users {
 
-
-    private Integer id;
+    @Id
+    @GeneratedValue
+    private Integer userId;
 
     @Size(min=2, message = "Name은 2글자 이상 입력해주세요.")
-    private String name;
+    private String userName;
     @Past
     private Date joinDate;
-    private String password;
-    private String ssn;
+    private String userPassword;
+    private String uesrSsn;
 }

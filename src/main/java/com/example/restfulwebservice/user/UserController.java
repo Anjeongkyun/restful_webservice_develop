@@ -24,11 +24,11 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<CollectionModel<EntityModel<User>>> retrieveAllUsers() {
-        List<EntityModel<User>> result = new ArrayList<>();
-        List<User> users = userDaoService.findAll();
+    public ResponseEntity<CollectionModel<EntityModel<Users>>> retrieveAllUsers() {
+        List<EntityModel<Users>> result = new ArrayList<>();
+        List<Users> users = userDaoService.findAll();
 
-        for (User user : users) {
+        for (Users user : users) {
             EntityModel entityModel = EntityModel.of(user);
             entityModel.add(linkTo(methodOn(this.getClass()).retrieveAllUsers()).withSelfRel());
 
@@ -39,8 +39,8 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public User retrieveUsers(@PathVariable int id) {
-        User user = userDaoService.findOne(id);
+    public Users retrieveUsers(@PathVariable int id) {
+        Users user = userDaoService.findOne(id);
 
         if(user == null){
             throw new UserNotFoundException(String.format("ID[%s] not found", id));
@@ -50,12 +50,12 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        User savedUser = userDaoService.save(user);
+    public ResponseEntity<Users> createUser(@Valid @RequestBody Users user) {
+        Users savedUser = userDaoService.save(user);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(savedUser.getId())
+                .buildAndExpand(savedUser.getUserId())
                 .toUri();
 
         return ResponseEntity.created(location).build();
@@ -63,7 +63,7 @@ public class UserController {
 
     @DeleteMapping("users/{id}")
     public void deleteUser(@PathVariable int id){
-        User user = userDaoService.deleteUser(id);
+        Users user = userDaoService.deleteUser(id);
 
         if(user == null){
             throw new UserNotFoundException(String.format("ID[%s] not found", id));
@@ -71,8 +71,8 @@ public class UserController {
     }
 
     @PutMapping("/users")
-    public void updateUser(@RequestBody User user){
-        User updateUser = userDaoService.updateUser(user);
+    public void updateUser(@RequestBody Users user){
+        Users updateUser = userDaoService.updateUser(user);
 
     }
 }

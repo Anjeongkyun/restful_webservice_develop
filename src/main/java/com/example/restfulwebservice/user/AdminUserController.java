@@ -4,13 +4,9 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -25,7 +21,7 @@ public class AdminUserController {
 
     @GetMapping("/users")
     public MappingJacksonValue retrieveAllUsers() {
-        List<User> users = userDaoService.findAll();
+        List<Users> users = userDaoService.findAll();
 
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
                 .filterOutAllExcept("id","name","joinDate","ssn");
@@ -38,7 +34,7 @@ public class AdminUserController {
 
     @GetMapping("/v1/users/{id}")
     public MappingJacksonValue retrieveUsersV1(@PathVariable int id) {
-        User user = userDaoService.findOne(id);
+        Users user = userDaoService.findOne(id);
 
         if(user == null){
             throw new UserNotFoundException(String.format("ID[%s] not found", id));
@@ -55,7 +51,7 @@ public class AdminUserController {
 
     @GetMapping("/v2/users/{id}")
     public MappingJacksonValue retrieveUsersV2(@PathVariable int id) {
-        User user = userDaoService.findOne(id);
+        Users user = userDaoService.findOne(id);
 
         if(user == null){
             throw new UserNotFoundException(String.format("ID[%s] not found", id));
