@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 
 //@JsonFilter("UserInfo")
@@ -18,7 +20,6 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 public class Users {
-
     @Id
     @GeneratedValue
     private Integer userId;
@@ -28,5 +29,16 @@ public class Users {
     @Past
     private Date joinDate;
     private String userPassword;
-    private String uesrSsn;
+    private String userSsn;
+
+    @OneToMany(mappedBy = "users")
+    private List<Post> posts;
+
+    public Users(Integer userId, String userName, Date joinDate, String userPassword, String userSsn) {
+        this.userId = userId;
+        this.userName = userName;
+        this.joinDate = joinDate;
+        this.userPassword = userPassword;
+        this.userSsn = userSsn;
+    }
 }
